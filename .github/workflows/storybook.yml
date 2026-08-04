@@ -1,0 +1,37 @@
+name: Deploy Storybook
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['**.md']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build Storybook
+        run: pnpm build-storybook
+      # ⚠️ peaceiris pushes to the gh-pages BRANCH, so the repo's Pages setting
+      # must be build_type=legacy / source gh-pages. If it is set to "GitHub
+      # Actions" (build_type=workflow) the deployments are pushed but IGNORED —
+      # the site freezes on an old build while every run stays green.
+      # Check with: gh api repos/<owner>/<repo>/pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static

@@ -1,0 +1,98 @@
+/*
+ * Machinery360 accessibility + typography base layer.
+ *
+ * Global rules that scoped component styles cannot express. Import ONCE per
+ * consumer app, alongside the token layer:
+ *
+ *   @import "machinery360-ui/src/tokens/tokens.css";
+ *   @import "machinery360-ui/src/tokens/base.css";
+ *
+ * Self-contained: every token used here has a literal fallback, so this file
+ * works even in a consumer that maintains its own token layer.
+ */
+
+:root {
+  /* Default so consumers that skip tokens.css still resolve the scale. */
+  --mc-font-scale: 1;
+}
+
+/* A user text-size control multiplies the root font-size, so anything sized in
+ * rem scales with it. `1rem` on the root resolves to the browser's default font
+ * size, so this ALSO honours the user's browser/OS preference — never hard-code
+ * html { font-size } in px. */
+html {
+  font-size: calc(1rem * var(--mc-font-scale, 1));
+}
+
+/* ⚠️ Style html/body, not just the tokens. A base layer that only declares CSS
+ * vars leaves page text (headings, paragraphs) falling back to the browser's
+ * default SERIF, while components carry their own font — producing the
+ * "buttons fine / text ugly" mismatch that is invisible until deployed.
+ * Vécu FDC 2026-07-07. */
+html {
+  font-family: var(--mc-font-body, system-ui, sans-serif);
+  color: var(--mc-color-text, #2A3340);
+  background: var(--mc-color-bg, #F2F4F7);
+  line-height: 1.5;
+  color-scheme: var(--mc-scheme, light);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--mc-font-display, system-ui, sans-serif);
+  line-height: 1.2;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Visible keyboard focus. `:focus-visible` only — pointer users see no ring,
+ * keyboard users always do. */
+:focus-visible {
+  outline: var(--mc-focus-ring, 2px solid #E07B18);
+  outline-offset: var(--mc-focus-offset, 2px);
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Media should never overflow its container. */
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Respect reduced-motion: neutralize transitions/animations for users who ask
+ * the OS to minimize motion (vestibular disorders). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Screen-reader-only utility — visually hidden, still announced. */
+.mc-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

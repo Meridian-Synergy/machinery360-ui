@@ -1,0 +1,124 @@
+/*
+ * Machinery360 design tokens.
+ *
+ * Charter: heavy-equipment industrial — amber (action) on steel (structure).
+ *
+ * ⚠️ The amber below is a DELIBERATE DECLINATION, not the Rippa brand colour.
+ * Rippa is a third-party trademark; until a written agreement exists we use a
+ * neighbouring hue and never the exact brand value or logotype.
+ * See docs/MACHINERY360_CADRAGE.md §3.1.
+ *
+ * Consumers must import this file (or declare their own layer) — but every
+ * component also carries literal fallbacks via var(--token, value), so nothing
+ * breaks if a consumer forgets. Never introduce a raw colour in a component.
+ */
+:root {
+  /* === Brand === */
+  --mc-color-amber:      #E07B18;  /* Primary action — CTA, primary buttons, active states */
+  --mc-color-amber-dark: #B35F0C;  /* Accessible amber on light bg — 4.6:1 on white */
+  --mc-color-steel:      #2A3340;  /* Structure — headings, navbars, primary surfaces */
+  --mc-color-steel-deep: #161C25;  /* Dark theme page background */
+  --mc-color-steel-2:    #202834;  /* Dark theme raised surface */
+  --mc-color-slate:      #6B7583;  /* Secondary text, borders, placeholders */
+  --mc-color-white:      #FFFFFF;
+
+  /* === Surfaces (light theme is the default — the public lookup is light) === */
+  --mc-color-bg:      #F2F4F7;
+  --mc-color-surface: var(--mc-color-white);
+  --mc-color-border:  #DCE0E7;
+  --mc-color-text:    var(--mc-color-steel);
+  --mc-color-muted:   #5C6675;  /* Accessible muted on light bg — 5.4:1 on white */
+
+  /* === Status === */
+  --mc-color-success: #157F4B;
+  --mc-color-warning: #B26A00;
+  --mc-color-error:   #C0392B;
+  --mc-color-info:    #1E6FA8;
+
+  /* === Maintenance buckets ===
+   * The product's core semantic: the three answers to "where do I stand?".
+   * Defined here so every surface (web lookup, app fleet, email) agrees.
+   * See docs/MACHINERY360_CADRAGE.md §6. */
+  --mc-bucket-overdue: var(--mc-color-error);    /* Past due */
+  --mc-bucket-due:     var(--mc-color-amber);    /* Due now */
+  --mc-bucket-soon:    var(--mc-color-info);     /* Coming up */
+  --mc-bucket-done:    var(--mc-color-success);  /* Completed */
+
+  /* === Typography ===
+   * Families are declared as tokens with a system fallback. No font files are
+   * shipped at this stage — a consumer that wants Barlow loads it itself and the
+   * token resolves. This keeps the DS free of a webfont budget it can't measure. */
+  --mc-font-display: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mc-font-body:    'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mc-font-data:    ui-monospace, 'Space Mono', 'SFMono-Regular', monospace;
+
+  /* === Spacing === */
+  --mc-space-xs:  4px;
+  --mc-space-sm:  8px;
+  --mc-space-md:  16px;
+  --mc-space-lg:  24px;
+  --mc-space-xl:  40px;
+  --mc-space-2xl: 56px;
+
+  /* === Layout — shared content rail ===
+   * Single source of truth for the horizontal rail (max-width + inline padding),
+   * so page titles align vertically within a page and across pages. */
+  --mc-rail-max:        1200px;
+  --mc-rail-pad:        24px;
+  --mc-rail-pad-mobile: 16px;
+
+  /* === Radius === */
+  --mc-radius-sm:   4px;
+  --mc-radius-md:   8px;
+  --mc-radius-lg:   16px;
+  --mc-radius-full: 9999px;
+
+  /* === Shadows === */
+  --mc-shadow-xs: 0 1px 4px rgba(22, 28, 37, 0.06);
+  --mc-shadow-sm: 0 2px 12px rgba(22, 28, 37, 0.08);
+  --mc-shadow-md: 0 4px 24px rgba(22, 28, 37, 0.12);
+
+  /* === Transitions === */
+  --mc-transition-fast: 0.1s ease;
+  --mc-transition-base: 0.2s ease;
+
+  /* === Color scheme ===
+   * Form controls read this so browser chrome (autofill, date pickers,
+   * scrollbars) follows the theme instead of defaulting to light.
+   * ⚠️ Never hard-code `color-scheme` on a control — it makes native date/time
+   * picker indicators invisible in the other theme (vécu wp360 2026-07-15). */
+  --mc-scheme: light;
+
+  /* === Accessibility === */
+  --mc-font-scale: 1;
+  --mc-text-xs: calc(0.75rem  * var(--mc-font-scale));
+  --mc-text-sm: calc(0.875rem * var(--mc-font-scale));
+  --mc-text-md: calc(1rem     * var(--mc-font-scale));
+  --mc-text-lg: calc(1.25rem  * var(--mc-font-scale));
+  --mc-text-xl: calc(1.5rem   * var(--mc-font-scale));
+
+  --mc-focus-ring:   2px solid var(--mc-color-amber);
+  --mc-focus-offset: 2px;
+}
+
+/*
+ * Dark theme. Structure is in place from day one (the app will be dark, the
+ * public lookup light) but only ONE theme is exercised at this stage — see
+ * cadrage §7: don't build the multi-brand abstraction on a single consumer.
+ *
+ * Overrides SEMANTIC tokens only. Brand values are theme-independent.
+ */
+:root[data-theme='dark'] {
+  --mc-color-bg:      var(--mc-color-steel-deep);
+  --mc-color-surface: var(--mc-color-steel-2);
+  --mc-color-border:  #313B4A;
+  --mc-color-text:    #E8ECF2;
+  --mc-color-muted:   #9AA5B4;
+  --mc-scheme:        dark;
+
+  /* Status hues need lifting on dark surfaces to keep contrast. */
+  --mc-color-success: #35C07A;
+  --mc-color-warning: #E8A33D;
+  --mc-color-error:   #F0685A;
+  --mc-color-info:    #55AEE6;
+}
