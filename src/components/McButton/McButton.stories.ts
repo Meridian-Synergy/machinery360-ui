@@ -61,6 +61,26 @@ export const States: Story = {
         <McButton loading>Chargement</McButton>
         <McButton disabled>Désactivé</McButton>
         <McButton href="#">Lien</McButton>
+        <McButton as="a" href="#" disabled>Lien désactivé</McButton>
+      </div>`,
+  }),
+}
+
+/**
+ * Naviguer DANS l'app : `:as="NuxtLink"`, jamais `href`.
+ *
+ * `href` rend un `<a>` nu, dont le clic recharge la page entière — en SPA cela
+ * refait l'init de session et repart d'un écran blanc. On garde `href` pour les
+ * liens sortants (un manuel constructeur, une doc externe) et `as` pour tout ce
+ * qui reste dans l'app.
+ */
+export const AsLink: Story = {
+  render: () => ({
+    components: { McButton },
+    template: `
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+        <McButton as="a" href="#">Navigation interne (ici : &lt;a&gt;, en app : NuxtLink)</McButton>
+        <McButton href="https://example.com" variant="secondary">Lien sortant</McButton>
       </div>`,
   }),
 }

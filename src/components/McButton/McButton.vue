@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, type Component } from 'vue'
 import McSpinner from '../McSpinner/McSpinner.vue'
 
 /**
@@ -25,6 +25,16 @@ const props = withDefaults(defineProps<{
   size?: 'sm' | 'md' | 'lg'
   /** Renders <a> instead of <button> when set */
   href?: string
+  /**
+   * Rend un autre élément ou composant — typiquement `NuxtLink` pour une action
+   * de navigation.
+   *
+   * ⚠️ Dans une app SPA (`ssr: false`), un `href` produit un `<a>` nu : le clic
+   * RECHARGE la page entière, ce qui refait l'init de session et repart d'un
+   * écran blanc. Pour naviguer à l'intérieur de l'app, c'est `:as="NuxtLink"`
+   * qu'il faut, jamais `href`. `href` reste juste pour les liens sortants.
+   */
+  as?: string | Component
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   /** Shows a spinner and blocks interaction; keeps the label for layout stability */
@@ -37,18 +47,27 @@ const props = withDefaults(defineProps<{
 })
 
 const isDisabled = computed(() => props.disabled || props.loading)
+
+/** `as` prime, puis `href` (lien sortant), sinon un vrai bouton. */
+const tag = computed(() => props.as ?? (props.href ? 'a' : 'button'))
+/**
+ * `disabled` n'existe que sur `<button>`. Posé sur un `<a>` ou un `NuxtLink`,
+ * l'attribut est ignoré par le navigateur : le lien reste cliquable alors qu'on
+ * le croit neutralisé. D'où le repli sur `aria-disabled` partout ailleurs.
+ */
+const isNativeButton = computed(() => tag.value === 'button')
 const spinnerSize = computed(() => (props.size === 'lg' ? 18 : props.size === 'sm' ? 12 : 14))
 </script>
 
 <template>
   <component
-    :is="href ? 'a' : 'button'"
+    :is="tag"
     class="mc-button"
     :class="[`mc-button--${variant}`, `mc-button--${size}`, { 'mc-button--block': block, 'mc-button--loading': loading }]"
     :href="href && !isDisabled ? href : undefined"
-    :type="href ? undefined : type"
-    :disabled="href ? undefined : isDisabled"
-    :aria-disabled="href && isDisabled ? 'true' : undefined"
+    :type="isNativeButton ? type : undefined"
+    :disabled="isNativeButton ? isDisabled : undefined"
+    :aria-disabled="!isNativeButton && isDisabled ? 'true' : undefined"
     :aria-busy="loading ? 'true' : undefined"
   >
     <McSpinner v-if="loading" :size="spinnerSize" class="mc-button__spinner" />
@@ -77,6 +96,10 @@ const spinnerSize = computed(() => (props.size === 'lg' ? 18 : props.size === 's
 .mc-button[aria-disabled='true'] {
   opacity: 0.55;
   cursor: not-allowed;
+  /* Un lien désactivé reste navigable : `aria-disabled` informe l'assistance
+   * technique mais n'empêche rien. `pointer-events: none` coupe réellement le
+   * clic, sans quoi un CTA grisé emmène quand même l'utilisateur ailleurs. */
+  pointer-events: none;
 }
 .mc-button--block { width: 100%; }
 
