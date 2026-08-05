@@ -69,7 +69,7 @@ const dotSize = computed(() => Math.max(2, props.size * 0.16))
   top: 50%;
   left: 50%;
   border-radius: 50%;
-  background: var(--mc-color-amber, #e07b18);
+  background: var(--mc-color-blue, #1560a8);
 }
 @keyframes mc-spin {
   to { transform: rotate(360deg); }

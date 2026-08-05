@@ -135,7 +135,7 @@ onBeforeUnmount(() => form?.removeEventListener('submit', onFormSubmit))
   color-scheme: var(--mc-scheme, light);
 }
 .mc-input:focus-within {
-  border-color: var(--mc-color-amber, #e07b18);
+  border-color: var(--mc-color-blue, #1560a8);
 }
 .mc-input--invalid { border-color: var(--mc-color-error, #c0392b); }
 .mc-input--disabled { opacity: 0.6; }
@@ -167,7 +167,7 @@ onBeforeUnmount(() => form?.removeEventListener('submit', onFormSubmit))
   border: 0;
   border-radius: inherit;
   background: transparent;
-  color: var(--mc-color-amber-dark, #b35f0c);
+  color: var(--mc-color-blue-dark, #0e4478);
   font-family: inherit;
   font-size: var(--mc-text-xs, 0.75rem);
   font-weight: 600;

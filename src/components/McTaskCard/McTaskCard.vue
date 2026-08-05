@@ -13,7 +13,7 @@ import McBucketBadge from '../McBucketBadge/McBucketBadge.vue'
 withDefaults(defineProps<{
   /** Libellé de la tâche, déjà traduit. */
   title: string
-  bucket: 'overdue' | 'due' | 'soon' | 'done'
+  bucket: 'past' | 'overdue' | 'due' | 'soon' | 'done'
   /** Libellé du seau, déjà traduit. */
   bucketLabel: string
   /** Échéance en clair : « à 250 h », « dépassé de 40 h ». */
@@ -54,9 +54,10 @@ withDefaults(defineProps<{
   border-radius: var(--mc-radius-md, 8px);
   padding: var(--mc-space-md, 16px);
 }
+.mc-task:has(.mc-bucket--past)    { border-left-color: var(--mc-bucket-past, #b26a00); }
 .mc-task:has(.mc-bucket--overdue) { border-left-color: var(--mc-bucket-overdue, #c0392b); }
-.mc-task:has(.mc-bucket--due)     { border-left-color: var(--mc-bucket-due, #e07b18); }
-.mc-task:has(.mc-bucket--soon)    { border-left-color: var(--mc-bucket-soon, #1e6fa8); }
+.mc-task:has(.mc-bucket--due)     { border-left-color: var(--mc-bucket-due, #1560a8); }
+.mc-task:has(.mc-bucket--soon)    { border-left-color: var(--mc-bucket-soon, #66707d); }
 
 .mc-task__head {
   display: flex;

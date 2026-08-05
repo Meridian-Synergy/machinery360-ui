@@ -1,12 +1,17 @@
 /*
  * Machinery360 design tokens.
  *
- * Charter: heavy-equipment industrial — amber (action) on steel (structure).
+ * Charter: heavy-equipment industrial — steel blue (action) on anthracite
+ * (structure).
  *
- * ⚠️ The amber below is a DELIBERATE DECLINATION, not the Rippa brand colour.
- * Rippa is a third-party trademark; until a written agreement exists we use a
- * neighbouring hue and never the exact brand value or logotype.
- * See docs/MACHINERY360_CADRAGE.md §3.1.
+ * ⚠️ DÉCLINAISON DÉLIBÉRÉE des couleurs Rippa, jamais leurs valeurs.
+ * Références constructeur : RAL 5017 (#063971) et RAL 7016 (#383E42).
+ * Notre bleu s'en écarte de 109 en RGB cumulé et notre anthracite de 17 —
+ * même famille, reconnaissable par un pilote Rippa, mais pas leur peinture.
+ * Rippa est une marque tierce : sans accord écrit, on reste voisin, jamais
+ * identique. Cf. docs/MACHINERY360_CADRAGE.md §3.1.
+ *
+ * Contrastes vérifiés sur blanc : bleu 6.42:1, anthracite 12.06:1 (WCAG AA).
  *
  * Consumers must import this file (or declare their own layer) — but every
  * component also carries literal fallbacks via var(--token, value), so nothing
@@ -14,12 +19,14 @@
  */
 :root {
   /* === Brand === */
-  --mc-color-amber:      #E07B18;  /* Primary action — CTA, primary buttons, active states */
-  --mc-color-amber-dark: #B35F0C;  /* Accessible amber on light bg — 4.6:1 on white */
-  --mc-color-steel:      #2A3340;  /* Structure — headings, navbars, primary surfaces */
-  --mc-color-steel-deep: #161C25;  /* Dark theme page background */
-  --mc-color-steel-2:    #202834;  /* Dark theme raised surface */
-  --mc-color-slate:      #6B7583;  /* Secondary text, borders, placeholders */
+  --mc-color-blue:       #1560A8;  /* Action — CTA, boutons primaires, états actifs (6.42:1) */
+  --mc-color-blue-dark:  #0E4478;  /* Survol, et bleu de texte sur fond clair (9.92:1) */
+  --mc-color-blue-light: #4F9BE0;  /* Bleu du thème sombre — illisible sur blanc, jamais en texte clair */
+  --mc-color-steel:      #2E3742;  /* Structure — titres, barres, surfaces primaires */
+  --mc-color-steel-deep: #171D24;  /* Fond de page du thème sombre */
+  --mc-color-steel-2:    #232C36;  /* Surface surélevée du thème sombre */
+  --mc-color-slate:      #66707D;  /* Texte secondaire, bordures, placeholders */
+  --mc-color-amber:      #B26A00;  /* Attention — réservé aux échéances INCERTAINES (cf. seaux) */
   --mc-color-white:      #FFFFFF;
 
   /* === Surfaces (light theme is the default — the public lookup is light) === */
@@ -35,14 +42,23 @@
   --mc-color-error:   #C0392B;
   --mc-color-info:    #1E6FA8;
 
-  /* === Maintenance buckets ===
-   * The product's core semantic: the three answers to "where do I stand?".
-   * Defined here so every surface (web lookup, app fleet, email) agrees.
-   * See docs/MACHINERY360_CADRAGE.md §6. */
-  --mc-bucket-overdue: var(--mc-color-error);    /* Past due */
-  --mc-bucket-due:     var(--mc-color-amber);    /* Due now */
-  --mc-bucket-soon:    var(--mc-color-info);     /* Coming up */
-  --mc-bucket-done:    var(--mc-color-success);  /* Completed */
+  /* === Seaux d'entretien ===
+   * Le vocabulaire du produit — la réponse à « où j'en suis ? ». Défini ici
+   * pour que le lookup public, l'app et les emails disent la même chose.
+   *
+   * ⚠️ DEUX niveaux pour le passé, et la couleur suit le niveau de CERTITUDE :
+   *   - `past`    : le web public ne connaît AUCUN historique. Il peut dire
+   *                 « c'était attendu à 250 h », jamais « vous êtes en retard ».
+   *                 Ambre = attention, pas alarme.
+   *   - `overdue` : l'app connaît l'historique de la machine. Là seulement,
+   *                 affirmer un retard est fondé — donc rouge.
+   * Alarmer sur une hypothèse détruit la confiance : l'utilisateur cesse de lire.
+   * Cf. docs/MACHINERY360_CADRAGE.md §6. */
+  --mc-bucket-past:    var(--mc-color-amber);    /* Échéance passée, historique inconnu */
+  --mc-bucket-overdue: var(--mc-color-error);    /* Retard avéré (app seulement) */
+  --mc-bucket-due:     var(--mc-color-blue);     /* À faire maintenant */
+  --mc-bucket-soon:    var(--mc-color-slate);    /* Bientôt */
+  --mc-bucket-done:    var(--mc-color-success);  /* Fait */
 
   /* === Typography ===
    * Families are declared as tokens with a system fallback. No font files are
@@ -97,7 +113,7 @@
   --mc-text-lg: calc(1.25rem  * var(--mc-font-scale));
   --mc-text-xl: calc(1.5rem   * var(--mc-font-scale));
 
-  --mc-focus-ring:   2px solid var(--mc-color-amber);
+  --mc-focus-ring:   2px solid var(--mc-color-blue);
   --mc-focus-offset: 2px;
 }
 
@@ -115,6 +131,9 @@
   --mc-color-text:    #E8ECF2;
   --mc-color-muted:   #9AA5B4;
   --mc-scheme:        dark;
+  /* Le bleu primaire tombe à 2.67:1 sur le fond sombre : on remonte la teinte
+   * plutôt que de laisser un CTA illisible. */
+  --mc-color-blue:    var(--mc-color-blue-light);
 
   /* Status hues need lifting on dark surfaces to keep contrast. */
   --mc-color-success: #35C07A;

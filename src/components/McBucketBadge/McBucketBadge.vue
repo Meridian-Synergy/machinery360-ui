@@ -7,12 +7,17 @@
  * les emails. D'où un composant, et des tokens `--mc-bucket-*` partagés plutôt
  * qu'une couleur choisie par écran.
  *
+ * ⚠️ `past` vs `overdue` : le premier dit « c'était attendu », le second
+ * « vous êtes en retard ». Le web public n'a aucun historique et n'a donc le
+ * droit d'employer que `past` ; seule l'app, qui connaît la machine, peut
+ * affirmer un retard. La couleur suit la certitude — ambre, pas rouge.
+ *
  * ⚠️ La couleur ne porte JAMAIS l'information seule : le libellé, fourni par le
  * consommateur (le DS est i18n-agnostique), est toujours affiché. Un
  * daltonien ou une impression en noir et blanc doivent rester lisibles.
  */
 withDefaults(defineProps<{
-  bucket: 'overdue' | 'due' | 'soon' | 'done'
+  bucket: 'past' | 'overdue' | 'due' | 'soon' | 'done'
   /** Libellé localisé — obligatoire en pratique, la couleur ne suffit pas. */
   label: string
   size?: 'sm' | 'md'
@@ -52,6 +57,7 @@ withDefaults(defineProps<{
   background: var(--mc-bucket-hue);
 }
 
+.mc-bucket--past    { --mc-bucket-hue: var(--mc-bucket-past, #b26a00); }
 .mc-bucket--overdue { --mc-bucket-hue: var(--mc-bucket-overdue, #c0392b); }
 .mc-bucket--due     { --mc-bucket-hue: var(--mc-bucket-due, #e07b18); }
 .mc-bucket--soon    { --mc-bucket-hue: var(--mc-bucket-soon, #1e6fa8); }
