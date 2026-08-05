@@ -56,6 +56,68 @@ function withoutComments(source: string): string {
     .replace(/(^|[^:])\/\/.*$/gm, '$1')
 }
 
+/**
+ * Un fallback PRÉSENT peut être PÉRIMÉ.
+ *
+ * Au changement de charte, les valeurs de repli restent celles de l'ancienne
+ * palette : le composant s'affiche juste chez un consommateur qui importe les
+ * tokens, et dans l'ANCIENNE couleur chez celui qui ne les importe pas —
+ * c'est-à-dire exactement le cas que le fallback existe pour couvrir.
+ *
+ * Vécu au passage de l'ambre au bleu : `--mc-bucket-due` a gardé l'orange et
+ * le guard « présence » est resté vert.
+ */
+/** #FFF et #ffffff sont la même couleur : comparer les formes développées. */
+function normalise(hex: string): string {
+  const h = hex.trim().toLowerCase()
+  return h.length === 4 ? `#${h[1]}${h[1]}${h[2]}${h[2]}${h[3]}${h[3]}` : h
+}
+
+describe('dérive des fallbacks', () => {
+  it('chaque fallback correspond à la valeur réelle du token', () => {
+    const tokens = readFileSync(
+      join(import.meta.dirname, '..', 'src', 'tokens', 'tokens.css'), 'utf8')
+
+    // ⚠️ Ne lire QUE le premier bloc `:root` — le thème par défaut. Les blocs
+    // `[data-theme]` qui suivent réassignent les mêmes tokens, et comparer un
+    // fallback à la valeur du thème sombre les déclarerait tous faux.
+    const root = tokens.slice(tokens.indexOf(':root {'), tokens.indexOf('\n}'))
+
+    const raw = new Map<string, string>()
+    for (const m of root.matchAll(/(--mc-[a-z0-9-]+)\s*:\s*([^;]+);/g)) {
+      raw.set(m[1]!, m[2]!.trim())
+    }
+
+    // Résout les alias (`--mc-color-text: var(--mc-color-steel)`) pour comparer
+    // à la couleur réellement obtenue, pas au renvoi.
+    const declared = new Map<string, string>()
+    for (const [token, value] of raw) {
+      let v = value
+      for (let depth = 0; depth < 4; depth++) {
+        const alias = v.match(/^var\(\s*(--mc-[a-z0-9-]+)/)
+        if (!alias) break
+        v = raw.get(alias[1]!) ?? v
+        if (v === value) break
+      }
+      if (/^#[0-9a-fA-F]{3,8}$/.test(v)) declared.set(token, normalise(v))
+    }
+    expect(declared.size).toBeGreaterThan(10)
+
+    const offenders: string[] = []
+    for (const { name, source } of componentFiles()) {
+      for (const m of source.matchAll(/var\(\s*(--mc-[a-z0-9-]+)\s*,\s*(#[0-9a-fA-F]{3,8})\s*\)/g)) {
+        const [, token, fallback] = m
+        const real = declared.get(token!)
+        if (real && real !== normalise(fallback!)) {
+          offenders.push(`${name}: var(${token}, ${fallback}) alors que le token vaut ${real}`)
+        }
+      }
+    }
+
+    expect(offenders).toEqual([])
+  })
+})
+
 describe('icons', () => {
   /**
    * Emoji are rendered by the system font: inconsistent across OSes, outside

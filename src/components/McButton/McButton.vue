@@ -103,10 +103,10 @@ const spinnerSize = computed(() => (props.size === 'lg' ? 18 : props.size === 's
 .mc-button--secondary {
   background: transparent;
   border-color: var(--mc-color-border, #dce0e7);
-  color: var(--mc-color-text, #2a3340);
+  color: var(--mc-color-text, #2e3742);
 }
 .mc-button--secondary:hover:not(:disabled):not([aria-disabled='true']) {
-  border-color: var(--mc-color-slate, #6b7583);
+  border-color: var(--mc-color-slate, #66707d);
 }
 
 .mc-button--warning {

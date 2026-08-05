@@ -98,7 +98,7 @@ defineEmits<{ 'update:modelValue': [value: string] }>()
   border: 0;
   border-radius: inherit;
   background: transparent;
-  color: var(--mc-color-text, #2a3340);
+  color: var(--mc-color-text, #2e3742);
   font-family: inherit;
   font-size: var(--mc-text-md, 1rem);
   /* Le chevron maison remplace celui du navigateur, qui varie d'un OS à l'autre. */

@@ -44,7 +44,7 @@ withDefaults(defineProps<{
    * les deux thèmes parce que la base est son propre token de surface. */
   background: color-mix(in srgb, var(--mc-bucket-hue) 12%, var(--mc-color-surface, #fff));
   border: 1px solid color-mix(in srgb, var(--mc-bucket-hue) 40%, transparent);
-  color: var(--mc-color-text, #2a3340);
+  color: var(--mc-color-text, #2e3742);
 }
 .mc-bucket--sm { padding: 2px 8px;  font-size: var(--mc-text-xs, 0.75rem); }
 .mc-bucket--md { padding: 4px 12px; font-size: var(--mc-text-sm, 0.875rem); }
@@ -59,7 +59,7 @@ withDefaults(defineProps<{
 
 .mc-bucket--past    { --mc-bucket-hue: var(--mc-bucket-past, #b26a00); }
 .mc-bucket--overdue { --mc-bucket-hue: var(--mc-bucket-overdue, #c0392b); }
-.mc-bucket--due     { --mc-bucket-hue: var(--mc-bucket-due, #e07b18); }
-.mc-bucket--soon    { --mc-bucket-hue: var(--mc-bucket-soon, #1e6fa8); }
+.mc-bucket--due     { --mc-bucket-hue: var(--mc-bucket-due, #1560a8); }
+.mc-bucket--soon    { --mc-bucket-hue: var(--mc-bucket-soon, #66707d); }
 .mc-bucket--done    { --mc-bucket-hue: var(--mc-bucket-done, #157f4b); }
 </style>

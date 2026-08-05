@@ -41,7 +41,7 @@ const role = computed(() => (props.assertive || props.variant === 'error' ? 'ale
   background: color-mix(in srgb, var(--mc-alert-hue) 8%, var(--mc-color-surface, #fff));
   border-color: color-mix(in srgb, var(--mc-alert-hue) 45%, transparent);
   border-left-color: var(--mc-alert-hue);
-  color: var(--mc-color-text, #2a3340);
+  color: var(--mc-color-text, #2e3742);
 }
 .mc-alert--info    { --mc-alert-hue: var(--mc-color-info, #1e6fa8); }
 .mc-alert--success { --mc-alert-hue: var(--mc-color-success, #157f4b); }

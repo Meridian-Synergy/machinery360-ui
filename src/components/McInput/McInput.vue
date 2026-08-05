@@ -148,7 +148,7 @@ onBeforeUnmount(() => form?.removeEventListener('submit', onFormSubmit))
   border: 0;
   border-radius: inherit;
   background: transparent;
-  color: var(--mc-color-text, #2a3340);
+  color: var(--mc-color-text, #2e3742);
   font-family: inherit;
   font-size: var(--mc-text-md, 1rem);
 }

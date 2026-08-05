@@ -73,7 +73,7 @@ const describedBy = computed(() => {
 .mc-field__label {
   font-size: var(--mc-text-sm, 0.875rem);
   font-weight: 600;
-  color: var(--mc-color-text, #2a3340);
+  color: var(--mc-color-text, #2e3742);
 }
 .mc-field__required {
   font-weight: 400;
