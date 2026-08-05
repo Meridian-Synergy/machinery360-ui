@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
@@ -11,13 +11,20 @@ import { describe, expect, it } from 'vitest'
 
 const COMPONENTS_DIR = join(import.meta.dirname, '..', 'src', 'components')
 
-function componentFiles(): { name: string, path: string, source: string }[] {
+function componentDirs(): string[] {
   return readdirSync(COMPONENTS_DIR, { withFileTypes: true })
     .filter(e => e.isDirectory())
-    .map((e) => {
-      const path = join(COMPONENTS_DIR, e.name, `${e.name}.vue`)
-      return { name: e.name, path, source: readFileSync(path, 'utf8') }
-    })
+    .map(e => e.name)
+}
+
+function componentFiles(): { name: string, path: string, source: string }[] {
+  return componentDirs()
+    .map(name => ({ name, path: join(COMPONENTS_DIR, name, `${name}.vue`) }))
+    // Un dossier sans SFC fait tomber TOUS les guards sur un ENOENT illisible.
+    // On l'écarte ici et on le signale par une assertion dédiée, qui nomme le
+    // dossier fautif au lieu d'afficher une trace de lecture de fichier.
+    .filter(({ path }) => existsSync(path))
+    .map(({ name, path }) => ({ name, path, source: readFileSync(path, 'utf8') }))
 }
 
 /**
@@ -212,6 +219,15 @@ describe('props', () => {
     }
 
     expect(offenders).toEqual([])
+  })
+})
+
+describe('arborescence', () => {
+  /** Un dossier de composant vide est un reste d'essai : il n'a rien à faire là. */
+  it('chaque dossier de composant contient son SFC', () => {
+    const empty = componentDirs()
+      .filter(name => !existsSync(join(COMPONENTS_DIR, name, `${name}.vue`)))
+    expect(empty).toEqual([])
   })
 })
 
