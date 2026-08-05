@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.4.0...v0.5.0) (2026-08-05)
+
+
+### Features
+
+* McTaskCard déplie les points et les gestes ([#15](https://github.com/Meridian-Synergy/machinery360-ui/issues/15)) ([e697150](https://github.com/Meridian-Synergy/machinery360-ui/commit/e697150c3da3582097ad61f630adcc71798aa893))
+
 ## [0.4.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.3.2...v0.4.0) (2026-08-05)
 
 
