@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.3.2...v0.4.0) (2026-08-05)
+
+
+### Features
+
+* McLocaleSwitcher — sélecteur de langue à drapeaux ([#12](https://github.com/Meridian-Synergy/machinery360-ui/issues/12)) ([8fa8e66](https://github.com/Meridian-Synergy/machinery360-ui/commit/8fa8e66ab445c4aae8430706caeef59661f27f68))
+
 ## [0.3.2](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.3.1...v0.3.2) (2026-08-05)
 
 
