@@ -31,7 +31,7 @@ html {
  * Vécu FDC 2026-07-07. */
 html {
   font-family: var(--mc-font-body, system-ui, sans-serif);
-  color: var(--mc-color-text, #2A3340);
+  color: var(--mc-color-text, #2E3742);
   background: var(--mc-color-bg, #F2F4F7);
   line-height: 1.5;
   color-scheme: var(--mc-scheme, light);
@@ -56,7 +56,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Visible keyboard focus. `:focus-visible` only — pointer users see no ring,
  * keyboard users always do. */
 :focus-visible {
-  outline: var(--mc-focus-ring, 2px solid #E07B18);
+  outline: var(--mc-focus-ring, 2px solid #1560A8);
   outline-offset: var(--mc-focus-offset, 2px);
 }
 :focus:not(:focus-visible) {
