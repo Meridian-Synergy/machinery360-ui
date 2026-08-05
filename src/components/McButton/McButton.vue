@@ -56,6 +56,32 @@ const tag = computed(() => props.as ?? (props.href ? 'a' : 'button'))
  * le croit neutralisé. D'où le repli sur `aria-disabled` partout ailleurs.
  */
 const isNativeButton = computed(() => tag.value === 'button')
+
+/**
+ * Attributs natifs, construits en OMETTANT ce qui ne s'applique pas — jamais en
+ * liant `undefined`.
+ *
+ * ⚠️ La nuance a coûté un CTA mort. Quand `as` porte un composant (`NuxtLink`),
+ * un `:href="undefined"` écrit ici ne disparaît pas : il descend jusqu'à
+ * l'élément racine rendu par l'enfant et EFFACE le `href` que celui-ci vient de
+ * poser. Le bouton s'affichait parfaitement et ne menait nulle part. Ni le
+ * build ni le typecheck ne voient ça.
+ */
+const nativeAttrs = computed(() => {
+  const attrs: Record<string, unknown> = {}
+  if (props.loading) attrs['aria-busy'] = 'true'
+
+  if (isNativeButton.value) {
+    attrs.type = props.type
+    if (isDisabled.value) attrs.disabled = true
+    return attrs
+  }
+
+  // Un lien désactivé perd sa cible : `aria-disabled` seul n'empêche rien.
+  if (props.href && !isDisabled.value) attrs.href = props.href
+  if (isDisabled.value) attrs['aria-disabled'] = 'true'
+  return attrs
+})
 const spinnerSize = computed(() => (props.size === 'lg' ? 18 : props.size === 'sm' ? 12 : 14))
 </script>
 
@@ -64,11 +90,7 @@ const spinnerSize = computed(() => (props.size === 'lg' ? 18 : props.size === 's
     :is="tag"
     class="mc-button"
     :class="[`mc-button--${variant}`, `mc-button--${size}`, { 'mc-button--block': block, 'mc-button--loading': loading }]"
-    :href="href && !isDisabled ? href : undefined"
-    :type="isNativeButton ? type : undefined"
-    :disabled="isNativeButton ? isDisabled : undefined"
-    :aria-disabled="!isNativeButton && isDisabled ? 'true' : undefined"
-    :aria-busy="loading ? 'true' : undefined"
+    v-bind="nativeAttrs"
   >
     <McSpinner v-if="loading" :size="spinnerSize" class="mc-button__spinner" />
     <slot />

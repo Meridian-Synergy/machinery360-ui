@@ -33,6 +33,27 @@ describe('McButton', () => {
     expect(w.text()).toBe('Nav')
   })
 
+  /**
+   * Le test qui a trouvé le défaut : McButton liait `href`/`type`/`disabled` à
+   * `undefined` quand ils ne s'appliquaient pas. Sur un composant passé à `as`,
+   * ces `undefined` descendent jusqu'à l'élément racine de l'enfant et EFFACENT
+   * les attributs qu'il vient de poser. Le CTA s'affichait parfaitement et ne
+   * menait nulle part.
+   */
+  it('n\'efface pas les attributs posés par le composant de `as`', () => {
+    const Stub = {
+      name: 'LinkStub',
+      props: { to: { type: String, default: '' } },
+      template: '<a :href="to"><slot /></a>',
+    }
+    const w = mount(McButton, { props: { as: Stub, to: '/engins/new' }, slots: { default: 'Nav' } })
+    expect(w.element.tagName).toBe('A')
+    expect(w.attributes('href')).toBe('/engins/new')
+    // `type` sur un lien annoncerait un type MIME ; `disabled` n'y existe pas.
+    expect(w.attributes('type')).toBeUndefined()
+    expect(w.attributes('disabled')).toBeUndefined()
+  })
+
   it('désactive un lien par aria-disabled, jamais par l\'attribut disabled', () => {
     const w = mount(McButton, { props: { href: '/x', disabled: true } })
     expect(w.attributes('aria-disabled')).toBe('true')
