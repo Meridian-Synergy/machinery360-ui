@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.2](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.3.1...v0.3.2) (2026-08-05)
+
+
+### Bug Fixes
+
+* fallbacks de base.css et guard élargi ([#11](https://github.com/Meridian-Synergy/machinery360-ui/issues/11)) ([6f1903a](https://github.com/Meridian-Synergy/machinery360-ui/commit/6f1903abf518abc6469e678c1b641b226a62f791))
+* fallbacks périmés + guard de dérive ([#9](https://github.com/Meridian-Synergy/machinery360-ui/issues/9)) ([ee3d1cf](https://github.com/Meridian-Synergy/machinery360-ui/commit/ee3d1cf2c4fcd20afb16d5929ff20c649b44ab64))
+
 ## [0.3.1](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.3.0...v0.3.1) (2026-08-05)
 
 
