@@ -20,6 +20,22 @@ function componentFiles(): { name: string, path: string, source: string }[] {
     })
 }
 
+/**
+ * Tout ce qui est LIVRÉ à un consommateur, pas seulement les composants.
+ *
+ * ⚠️ `base.css` était l'angle mort : il porte le fallback du focus ring et la
+ * couleur de texte de `html`. Après la bascule de charte, il servait encore un
+ * anneau de focus orange sur un site bleu — sur CHAQUE page, et sans qu'aucun
+ * guard ne bronche, puisqu'ils ne regardaient que `src/components/`.
+ */
+function shippedFiles(): { name: string, source: string }[] {
+  const layers = ['base.css', 'tokens.css'].map(f => ({
+    name: `tokens/${f}`,
+    source: readFileSync(join(import.meta.dirname, '..', 'src', 'tokens', f), 'utf8'),
+  }))
+  return [...componentFiles().map(({ name, source }) => ({ name, source })), ...layers]
+}
+
 describe('design tokens', () => {
   /**
    * A consumer is not required to declare our token layer. Without a literal
@@ -90,26 +106,46 @@ describe('dérive des fallbacks', () => {
 
     // Résout les alias (`--mc-color-text: var(--mc-color-steel)`) pour comparer
     // à la couleur réellement obtenue, pas au renvoi.
-    const declared = new Map<string, string>()
+    // Développe les alias jusqu'à obtenir des couleurs littérales, puis retient
+    // la LISTE des couleurs de la valeur (une seule en général, deux pour un
+    // raccourci comme une bordure).
+    const resolve = (value: string, depth = 0): string => {
+      if (depth > 4) return value
+      return value.replace(/var\(\s*(--mc-[a-z0-9-]+)\s*\)/g, (whole, t) => {
+        const next = raw.get(t)
+        return next ? resolve(next, depth + 1) : whole
+      })
+    }
+
+    const declared = new Map<string, string[]>()
     for (const [token, value] of raw) {
-      let v = value
-      for (let depth = 0; depth < 4; depth++) {
-        const alias = v.match(/^var\(\s*(--mc-[a-z0-9-]+)/)
-        if (!alias) break
-        v = raw.get(alias[1]!) ?? v
-        if (v === value) break
-      }
-      if (/^#[0-9a-fA-F]{3,8}$/.test(v)) declared.set(token, normalise(v))
+      const hexes = (resolve(value).match(/#[0-9a-fA-F]{3,8}/g) ?? []).map(normalise)
+      if (hexes.length) declared.set(token, hexes)
     }
     expect(declared.size).toBeGreaterThan(10)
 
+    /**
+     * ⚠️ Un fallback n'est pas toujours une couleur nue : `--mc-focus-ring` vaut
+     * `2px solid var(--mc-color-blue)`, donc son repli est `2px solid #1560A8`.
+     * Ne chercher que `var(--x, #hex)` laissait passer exactement ce cas — un
+     * anneau de focus orange sur toutes les pages d'un site bleu.
+     * On compare donc les COULEURS contenues de part et d'autre.
+     */
+    const hexesOf = (v: string) => (v.match(/#[0-9a-fA-F]{3,8}/g) ?? []).map(normalise)
+
     const offenders: string[] = []
-    for (const { name, source } of componentFiles()) {
-      for (const m of source.matchAll(/var\(\s*(--mc-[a-z0-9-]+)\s*,\s*(#[0-9a-fA-F]{3,8})\s*\)/g)) {
+    for (const { name, source } of shippedFiles()) {
+      // tokens.css DÉCLARE les valeurs : s'y comparer serait circulaire.
+      if (name === 'tokens/tokens.css') continue
+
+      for (const m of source.matchAll(/var\(\s*(--mc-[a-z0-9-]+)\s*,([^)]*#[0-9a-fA-F]{3,8}[^)]*)\)/g)) {
         const [, token, fallback] = m
-        const real = declared.get(token!)
-        if (real && real !== normalise(fallback!)) {
-          offenders.push(`${name}: var(${token}, ${fallback}) alors que le token vaut ${real}`)
+        const expected = declared.get(token!)
+        if (!expected?.length) continue
+
+        const got = hexesOf(fallback!)
+        if (got.length && got.join(',') !== expected.join(',')) {
+          offenders.push(`${name}: var(${token}, …${got.join(' ')}…) alors que le token vaut ${expected.join(' ')}`)
         }
       }
     }
