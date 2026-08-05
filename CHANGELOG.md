@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.5.0...v0.6.0) (2026-08-05)
+
+
+### Features
+
+* McMaintenanceTimeline — échéances sur l'axe des heures ([#18](https://github.com/Meridian-Synergy/machinery360-ui/issues/18)) ([f6a6408](https://github.com/Meridian-Synergy/machinery360-ui/commit/f6a6408eef6c0b5a99b0134f15741ab836d9da7d))
+
 ## [0.5.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.4.0...v0.5.0) (2026-08-05)
 
 
