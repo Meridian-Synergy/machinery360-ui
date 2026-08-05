@@ -11,9 +11,9 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          'Machinery360 charter — amber (action) on steel (structure). '
-          + 'The amber is a deliberate declination, NOT the Rippa brand colour: Rippa is a '
-          + 'third-party trademark and we use a neighbouring hue until a written agreement exists.',
+          'Charte Machinery360 — bleu acier (action) sur anthracite (structure). '
+          + 'Déclinaison délibérée des couleurs Rippa (RAL 5017 / RAL 7016), jamais leurs '
+          + 'valeurs : marque tierce, on reste voisin sans être identique.',
       },
     },
   },
@@ -36,9 +36,10 @@ export const Brand: Story = {
   render: () => ({
     template: `
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px">
-        ${swatch('--mc-color-amber', 'Amber — primary action')}
-        ${swatch('--mc-color-amber-dark', 'Amber dark — on light bg')}
-        ${swatch('--mc-color-steel', 'Steel — structure')}
+        ${swatch('--mc-color-blue', 'Bleu — action')}
+        ${swatch('--mc-color-blue-dark', 'Bleu foncé — survol, texte sur clair')}
+        ${swatch('--mc-color-amber', 'Ambre — attention (échéance incertaine)')}
+        ${swatch('--mc-color-steel', 'Anthracite — structure')}
         ${swatch('--mc-color-steel-deep', 'Steel deep — dark bg')}
         ${swatch('--mc-color-slate', 'Slate — secondary')}
       </div>`,
@@ -67,10 +68,11 @@ export const MaintenanceBuckets: Story = {
   render: () => ({
     template: `
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px">
-        ${swatch('--mc-bucket-overdue', 'Overdue — past due')}
-        ${swatch('--mc-bucket-due', 'Due — do it now')}
-        ${swatch('--mc-bucket-soon', 'Soon — coming up')}
-        ${swatch('--mc-bucket-done', 'Done — completed')}
+        ${swatch('--mc-bucket-past', 'Past — attendu, historique inconnu (web)')}
+        ${swatch('--mc-bucket-overdue', 'Overdue — retard avéré (app)')}
+        ${swatch('--mc-bucket-due', 'Due — à faire maintenant')}
+        ${swatch('--mc-bucket-soon', 'Soon — bientôt')}
+        ${swatch('--mc-bucket-done', 'Done — fait')}
       </div>`,
   }),
 }

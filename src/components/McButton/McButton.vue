@@ -86,14 +86,16 @@ const spinnerSize = computed(() => (props.size === 'lg' ? 18 : props.size === 's
 .mc-button--md { padding: 10px 18px; font-size: var(--mc-text-sm, 0.875rem);  min-height: 44px; }
 .mc-button--lg { padding: 14px 26px; font-size: var(--mc-text-md, 1rem);      min-height: 52px; }
 
-/* Primary — amber on any surface; white text works on both themes because the
- * amber is the constant, not the page background. */
+/* Primary — bleu sur n'importe quelle surface. Le blanc dessus tient dans les
+ * deux thèmes parce que c'est le BLEU qui est la constante, pas le fond de
+ * page : en thème sombre le token bascule sur une teinte plus claire pour ne
+ * pas tomber sous le seuil de contraste. */
 .mc-button--primary {
-  background: var(--mc-color-amber, #e07b18);
+  background: var(--mc-color-blue, #1560a8);
   color: #fff;
 }
 .mc-button--primary:hover:not(:disabled):not([aria-disabled='true']) {
-  background: var(--mc-color-amber-dark, #b35f0c);
+  background: var(--mc-color-blue-dark, #0e4478);
 }
 
 /* Secondary — outline, theme-adaptive: borrows the page's text/border tokens
@@ -118,10 +120,10 @@ const spinnerSize = computed(() => (props.size === 'lg' ? 18 : props.size === 's
 
 .mc-button--ghost {
   background: transparent;
-  color: var(--mc-color-amber-dark, #b35f0c);
+  color: var(--mc-color-blue-dark, #0e4478);
 }
 .mc-button--ghost:hover:not(:disabled):not([aria-disabled='true']) {
-  background: color-mix(in srgb, var(--mc-color-amber, #e07b18) 12%, transparent);
+  background: color-mix(in srgb, var(--mc-color-blue, #1560a8) 12%, transparent);
 }
 
 .mc-button__spinner { flex-shrink: 0; }

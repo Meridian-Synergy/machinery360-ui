@@ -86,7 +86,7 @@ defineEmits<{ 'update:modelValue': [value: string] }>()
   /* Suit le thème pour que la liste déroulante native soit dessinée assortie. */
   color-scheme: var(--mc-scheme, light);
 }
-.mc-select:focus-within { border-color: var(--mc-color-amber, #e07b18); }
+.mc-select:focus-within { border-color: var(--mc-color-blue, #1560a8); }
 .mc-select--invalid { border-color: var(--mc-color-error, #c0392b); }
 .mc-select--disabled { opacity: 0.6; }
 
