@@ -21,7 +21,13 @@
   /* === Brand === */
   --mc-color-blue:       #1560A8;  /* Action — CTA, boutons primaires, états actifs (6.42:1) */
   --mc-color-blue-dark:  #0E4478;  /* Survol, et bleu de texte sur fond clair (9.92:1) */
-  --mc-color-blue-light: #4F9BE0;  /* Bleu du thème sombre — illisible sur blanc, jamais en texte clair */
+  --mc-color-blue-light: #4F9BE0;  /* Bleu de surface sombre — CTA, aplats. Illisible sur blanc. */
+  /* Texte bleu sur surface ANTHRACITE : #4F9BE0 n'y atteint que 4.08:1, sous le
+   * seuil AA de 4.5:1 pour du texte de 14 px. Cette teinte-ci monte à 5.46:1.
+   * Deux tokens et non un seul, parce qu'un aplat et un texte n'ont pas le même
+   * seuil — les confondre produit une accroche illisible qui « passe » en revue
+   * visuelle sur un bon écran. */
+  --mc-color-blue-on-dark: #74B4EE;
   --mc-color-steel:      #2E3742;  /* Structure — titres, barres, surfaces primaires */
   --mc-color-steel-deep: #171D24;  /* Fond de page du thème sombre */
   --mc-color-steel-2:    #232C36;  /* Surface surélevée du thème sombre */
