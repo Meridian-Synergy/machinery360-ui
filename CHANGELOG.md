@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.3.0...v0.3.1) (2026-08-05)
+
+
+### Bug Fixes
+
+* teinte de texte bleu lisible sur surface anthracite ([#7](https://github.com/Meridian-Synergy/machinery360-ui/issues/7)) ([bccd0b5](https://github.com/Meridian-Synergy/machinery360-ui/commit/bccd0b5ec8c05dc5b220910a1195ccfc16218f10))
+
 ## [0.3.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.2.0...v0.3.0) (2026-08-05)
 
 
