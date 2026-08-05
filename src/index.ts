@@ -23,5 +23,6 @@ export { default as McMaintenanceTimeline } from './components/McMaintenanceTime
 export { default as McMachineDiagram } from './components/McMachineDiagram/McMachineDiagram.vue'
 export { default as McLocaleSwitcher } from './components/McLocaleSwitcher/McLocaleSwitcher.vue'
 export { default as McLoadingState } from './components/McLoadingState/McLoadingState.vue'
+export { default as McThemeToggle } from './components/McThemeToggle/McThemeToggle.vue'
 export { default as McTextSizeToggle } from './components/McTextSizeToggle/McTextSizeToggle.vue'
 export { default as McSpinner } from './components/McSpinner/McSpinner.vue'
