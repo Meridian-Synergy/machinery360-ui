@@ -16,6 +16,7 @@ export { default as McBrandMark } from './components/McBrandMark/McBrandMark.vue
 export { default as McButton } from './components/McButton/McButton.vue'
 export { default as McCard } from './components/McCard/McCard.vue'
 export { default as McContainer } from './components/McContainer/McContainer.vue'
+export { default as McDocIcon } from './components/McDocIcon/McDocIcon.vue'
 export { default as McField } from './components/McField/McField.vue'
 export { default as McInput } from './components/McInput/McInput.vue'
 export { default as McSelect } from './components/McSelect/McSelect.vue'
