@@ -26,10 +26,20 @@ const props = withDefaults(defineProps<{
   nowLabel?: string
   hoursUnit?: string
   taskLabel?: (count: number) => string
+  /**
+   * Libellé du point d'ORIGINE (0 h). Absent = pas d'origine affichée.
+   *
+   * ⚠️ Sans lui, la frise commence au compteur courant et ne dit rien de la
+   * distance parcourue : « 182 h · 200 h » se lit comme deux jalons voisins,
+   * alors que l'un est presque toute la vie de la machine et l'autre le
+   * prochain rendez-vous. Ancrer à zéro rend l'échelle lisible.
+   */
+  originLabel?: string
 }>(), {
   milestones: () => [],
   nowLabel: 'Now',
   hoursUnit: 'h',
+  originLabel: undefined,
 })
 
 /**
@@ -41,8 +51,16 @@ const items = computed(() => {
   const sorted = [...props.milestones].sort((a, b) => a.dueAtHours - b.dueAtHours)
   const idx = sorted.findIndex(m => m.dueAtHours > props.hours)
   const at = idx === -1 ? sorted.length : idx
+
+  // L'origine ne s'affiche que si le compteur l'a dépassée : sur une machine à
+  // 0 h, « 0 h » et « vous êtes ici » désigneraient le même instant.
+  const origin = props.originLabel && props.hours > 0
+    ? [{ kind: 'origin' as const, dueAtHours: 0, bucket: 'past' as const, count: 0 }]
+    : []
+
   return [
-    ...sorted.slice(0, at).map(m => ({ kind: 'milestone' as const, ...m })),
+    ...origin,
+    ...sorted.filter(m => m.dueAtHours > 0).slice(0, at).map(m => ({ kind: 'milestone' as const, ...m })),
     { kind: 'now' as const, dueAtHours: props.hours, bucket: 'due' as const, count: 0 },
     ...sorted.slice(at).map(m => ({ kind: 'milestone' as const, ...m })),
   ]
@@ -57,7 +75,10 @@ const items = computed(() => {
         class="mc-timeline__item"
         :class="[
           `mc-timeline__item--${item.kind === 'now' ? 'now' : item.bucket}`,
-          { 'mc-timeline__item--now': item.kind === 'now' },
+          {
+            'mc-timeline__item--now': item.kind === 'now',
+            'mc-timeline__item--origin': item.kind === 'origin',
+          },
         ]"
       >
         <span class="mc-timeline__dot" aria-hidden="true" />
@@ -66,6 +87,7 @@ const items = computed(() => {
         </span>
         <span class="mc-timeline__label">
           <template v-if="item.kind === 'now'">{{ nowLabel }}</template>
+          <template v-else-if="item.kind === 'origin'">{{ originLabel }}</template>
           <template v-else-if="taskLabel">{{ taskLabel(item.count) }}</template>
           <template v-else>{{ item.count }}</template>
         </span>
@@ -140,6 +162,19 @@ const items = computed(() => {
   height: 12px;
   top: -17px;
 }
+
+/* L'origine est un repère de contexte, pas une échéance : elle s'efface au
+ * profit de ce qui est actionnable. */
+.mc-timeline__item--origin .mc-timeline__dot {
+  border-color: var(--mc-color-slate, #66707d);
+  background: var(--mc-color-slate, #66707d);
+  width: 10px;
+  height: 10px;
+  top: -16px;
+}
+.mc-timeline__item--origin .mc-timeline__hours,
+.mc-timeline__item--origin .mc-timeline__label { color: var(--mc-color-muted, #5c6675); }
+.mc-timeline__item--origin .mc-timeline__hours { font-weight: 400; }
 
 .mc-timeline__hours {
   display: block;
