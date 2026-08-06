@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.7.0...v0.8.0) (2026-08-06)
+
+
+### Features
+
+* **brand-mark:** pastille de marque, monogramme par défaut ([#24](https://github.com/Meridian-Synergy/machinery360-ui/issues/24)) ([4381af8](https://github.com/Meridian-Synergy/machinery360-ui/commit/4381af80590a18fd774df7b77331ae5843a96071))
+* **timeline:** ancrer la frise à zéro ([#26](https://github.com/Meridian-Synergy/machinery360-ui/issues/26)) ([d7af12d](https://github.com/Meridian-Synergy/machinery360-ui/commit/d7af12d829af90883d5a0a24579e9335def35adc))
+
 ## [0.7.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.6.0...v0.7.0) (2026-08-05)
 
 
