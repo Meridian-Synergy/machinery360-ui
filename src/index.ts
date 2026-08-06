@@ -19,6 +19,7 @@ export { default as McContainer } from './components/McContainer/McContainer.vue
 export { default as McDocIcon } from './components/McDocIcon/McDocIcon.vue'
 export { default as McField } from './components/McField/McField.vue'
 export { default as McInput } from './components/McInput/McInput.vue'
+export { default as McPointPlacer } from './components/McPointPlacer/McPointPlacer.vue'
 export { default as McSelect } from './components/McSelect/McSelect.vue'
 export { default as McTaskCard } from './components/McTaskCard/McTaskCard.vue'
 export { default as McMaintenanceTimeline } from './components/McMaintenanceTimeline/McMaintenanceTimeline.vue'
