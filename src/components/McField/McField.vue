@@ -23,9 +23,18 @@ const props = withDefaults(defineProps<{
   id?: string
   /** Visually hides the label while keeping it announced */
   hideLabel?: boolean
-  /** Localized "(optional)" / "(required)" suffix — the DS is i18n-agnostic */
+  /**
+   * Marqueur de champ obligatoire. Le DS étant i18n-agnostique, l'app passe le
+   * libellé traduit (« obligatoire ») ; à défaut, l'astérisque s'affiche quand
+   * même.
+   *
+   * ⚠️ Le défaut n'est PAS `undefined`, et c'est le cœur de la correction. Tant
+   * que l'affichage dépendait d'une prop à penser, aucun formulaire ne la
+   * passait : l'utilisateur découvrait qu'un champ était obligatoire en voyant
+   * son enregistrement refusé. Un marqueur optionnel est un marqueur oublié.
+   */
   requiredLabel?: string
-}>(), {})
+}>(), { requiredLabel: '*' })
 
 // useId() (Vue 3.5+) is stable across SSR and client hydration. A random id is
 // NOT: the server renders one value, the client another, and Nuxt reports a
@@ -52,7 +61,7 @@ const describedBy = computed(() => {
       :for="controlId"
     >
       {{ label }}
-      <span v-if="required && requiredLabel" class="mc-field__required">{{ requiredLabel }}</span>
+      <span v-if="required" class="mc-field__required">{{ requiredLabel }}</span>
     </label>
 
     <p v-if="hint" :id="hintId" class="mc-field__hint">{{ hint }}</p>
