@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.6.0...v0.7.0) (2026-08-05)
+
+
+### Features
+
+* **button:** prop `as` pour naviguer sans recharger la page ([#22](https://github.com/Meridian-Synergy/machinery360-ui/issues/22)) ([c6d9706](https://github.com/Meridian-Synergy/machinery360-ui/commit/c6d97065eb55d9b9a7a64771673472b07207db72))
+* McThemeToggle — bascule clair / sombre ([#20](https://github.com/Meridian-Synergy/machinery360-ui/issues/20)) ([6486fda](https://github.com/Meridian-Synergy/machinery360-ui/commit/6486fda97ea9c57928346f1d0f0eacd7d8a9ef31))
+
+
+### Bug Fixes
+
+* **button:** ne plus effacer les attributs du composant passé à `as` ([#23](https://github.com/Meridian-Synergy/machinery360-ui/issues/23)) ([e291958](https://github.com/Meridian-Synergy/machinery360-ui/commit/e291958f115485520872849d5a7ef493eb6e163d))
+
 ## [0.6.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.5.0...v0.6.0) (2026-08-05)
 
 
