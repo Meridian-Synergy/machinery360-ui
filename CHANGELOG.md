@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.10.0...v0.11.0) (2026-08-07)
+
+
+### Features
+
+* **brand-logo:** rendre le logotype à son format naturel ([#33](https://github.com/Meridian-Synergy/machinery360-ui/issues/33)) ([d11e3cc](https://github.com/Meridian-Synergy/machinery360-ui/commit/d11e3ccbd0755855f14d5104e4f625391383bf06))
+
 ## [0.10.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.9.0...v0.10.0) (2026-08-07)
 
 
