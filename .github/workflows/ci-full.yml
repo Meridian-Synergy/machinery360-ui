@@ -1,0 +1,51 @@
+name: CI complète (à la demande)
+
+# CETTE CI EST EN SOMMEIL — elle ne se déclenche plus sur les PR.
+#
+# Décidé le 2026-08-07, par alignement sur waypoint360 (cf. POC_PLAYBOOK/15-CI-SOLO).
+# Denis travaille SEUL sur ce MVP : une CI de PR ne protège personne d'un collègue,
+# elle répète ce que son poste sait déjà — et bien plus lentement. Sur les soixante
+# derniers runs, ce workflow a consommé 5 minutes de runner.
+#
+# La validation est passée sur le poste : `pnpm verify` + hook `.githooks/pre-push`.
+# La livraison reste en CI (release-please.yml) : construire l'image et déployer
+# doit rester reproductible et indépendant d'une machine, un mardi soir.
+#
+# POUR LA RÉACTIVER — le jour où un second développeur arrive :
+#   remplacer le bloc `on:` ci-dessous par
+#     on:
+#       pull_request:
+#         branches: [main]
+#         paths-ignore: ['**.md']
+#   et supprimer ci-light.yml. Le contenu des jobs est intact.
+#
+# Elle reste lançable à la main depuis l'onglet Actions.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          # Node 22, not 20: @nuxt/eslint (via eslint-flat-config-utils) uses
+          # Object.groupBy, which needs Node 21+. On Node 20 the lint fails in CI
+          # while passing locally — invisible until it blocks a PR.
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Test
+        run: pnpm test
+      - name: Build Storybook
+        run: pnpm build-storybook
