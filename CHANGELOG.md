@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.9.0...v0.10.0) (2026-08-07)
+
+
+### Features
+
+* **ds:** icône de marque carrée et McPointPlacer ([#30](https://github.com/Meridian-Synergy/machinery360-ui/issues/30)) ([0e5c5fd](https://github.com/Meridian-Synergy/machinery360-ui/commit/0e5c5fd5adb4d2df128aa520c050f9df24ae3997))
+
 ## [0.9.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.8.0...v0.9.0) (2026-08-06)
 
 
