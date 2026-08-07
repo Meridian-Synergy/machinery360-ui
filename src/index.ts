@@ -13,6 +13,7 @@
 export { default as McAlert } from './components/McAlert/McAlert.vue'
 export { default as McBucketBadge } from './components/McBucketBadge/McBucketBadge.vue'
 export { default as McBrandMark } from './components/McBrandMark/McBrandMark.vue'
+export { default as McBrandLogo } from './components/McBrandLogo/McBrandLogo.vue'
 export { default as McButton } from './components/McButton/McButton.vue'
 export { default as McCard } from './components/McCard/McCard.vue'
 export { default as McContainer } from './components/McContainer/McContainer.vue'
