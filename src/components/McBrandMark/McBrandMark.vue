@@ -15,19 +15,35 @@ import { computed, ref, watch } from 'vue'
  */
 const props = withDefaults(defineProps<{
   name: string
-  /** URL du logo officiel. Absente ou en échec → monogramme. */
+  /**
+   * Pastille CARRÉE, pour les listes. Prioritaire sur `logoUrl`.
+   *
+   * ⚠️ Un logotype est horizontal — un symbole et un mot côte à côte. Réduit à
+   * 40 px dans une pastille carrée, il devient illisible : on perd le mot ET le
+   * symbole. D'où deux entrées distinctes plutôt qu'une seule image étirée.
+   */
+  iconUrl?: string | null
+  /** Logotype complet. Utilisé si aucune icône carrée n'est fournie. */
   logoUrl?: string | null
   size?: number
-}>(), { logoUrl: null, size: 44 })
+}>(), { iconUrl: null, logoUrl: null, size: 44 })
 
 /**
  * Une URL qui 404 laisserait une image cassée — pire que pas d'image du tout.
  * On bascule alors sur le monogramme, et on se souvient de l'échec.
  */
 const failed = ref(false)
-watch(() => props.logoUrl, () => { failed.value = false })
+watch(() => [props.iconUrl, props.logoUrl], () => { failed.value = false })
 
-const showLogo = computed(() => Boolean(props.logoUrl) && !failed.value)
+/**
+ * L'icône carrée d'abord, le logotype ensuite, le monogramme enfin.
+ *
+ * ⚠️ Le repli s'arrête au monogramme quand une icône était attendue : servir le
+ * logotype horizontal par défaut donnerait une bouillie plutôt qu'un repli. Le
+ * consommateur qui veut le logotype le passe explicitement.
+ */
+const source = computed(() => props.iconUrl || props.logoUrl || null)
+const showLogo = computed(() => Boolean(source.value) && !failed.value)
 
 /** Une ou deux lettres : « Rippa » → R, « JCB » → JC, « New Holland » → NH. */
 const initials = computed(() => {
@@ -69,7 +85,7 @@ const hue = computed(() => {
     }"
   >
     <img
-      v-if="showLogo" :src="logoUrl!" :alt="name"
+      v-if="showLogo" :src="source!" :alt="name"
       class="mc-brand-mark__img" loading="lazy" @error="failed = true">
     <template v-else>{{ initials }}</template>
   </span>
