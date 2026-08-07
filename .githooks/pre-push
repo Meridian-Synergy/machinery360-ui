@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Validation locale avant de pousser — ce que la CI de PR faisait avant.
+#
+# Un développeur seul n'a aucune raison de payer une machine bien plus lente pour
+# apprendre plus tard ce que son poste dit tout de suite. La CI garde ce qu'elle
+# seule peut garantir : la LIVRAISON (image, migrations, déploiement).
+#
+# Installer une fois par clone :  git config core.hooksPath .githooks
+# Contourner :                    git push --no-verify   (c'est vous qui décidez)
+# ⚠️ `pipefail` est indispensable, pas décoratif : sans lui, `pnpm verify | tee`
+# rend le code de sortie de `tee`, toujours 0. Le hook annonçait « OK » sur un
+# build en échec — vu à l'essai avant de committer ce fichier.
+set -eo pipefail
+
+if [ "${SKIP_VERIFY:-}" = "1" ]; then
+  echo "pre-push : ignoré (SKIP_VERIFY=1)"
+  exit 0
+fi
+
+echo "pre-push : validation locale (pnpm verify)…"
+start=$(date +%s)
+
+log=$(mktemp)
+trap 'rm -f "$log"' EXIT
+
+if ! pnpm verify 2>&1 | tee "$log"; then
+  # ⚠️ Le refus le plus fréquent n'est PAS une régression : `nuxt build` refuse de
+  # tourner pendant qu'un serveur de dev tient le verrou de `.nuxt`. Or un
+  # développeur solo a presque toujours son `pnpm dev` ouvert. Sans ce verdict,
+  # le message se perd dans la sortie du build et le réflexe devient
+  # `--no-verify` — c'est-à-dire plus de validation du tout.
+  if grep -q "Another Nuxt dev" "$log"; then
+    echo
+    echo "pre-push : ce n'est pas une régression — un serveur de dev tient le verrou."
+    echo "           Arrêtez-le (le PID est indiqué plus haut) puis relancez le push."
+  fi
+  exit 1
+fi
+
+echo "pre-push : OK en $(( $(date +%s) - start )) s"

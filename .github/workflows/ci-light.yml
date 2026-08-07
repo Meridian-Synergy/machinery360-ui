@@ -1,0 +1,32 @@
+name: CI
+
+# Filet minimal, PAS une validation. La validation vit sur le poste
+# (`pnpm verify` + `.githooks/pre-push`) ; ce job existe pour le cas où le hook a
+# été contourné, et pour qu'une PR porte une pastille.
+#
+# Ni typecheck ni build ici : le build est ce qui coûte, et c'est ce que le poste
+# fait le mieux. La CI complète reste dans ci-full.yml, lançable à la main.
+
+on:
+  pull_request:
+    branches: [main]
+    paths-ignore: ['**.md']
+
+concurrency:
+  group: ci-light-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          # Node 22 — même version que le runtime de production.
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Tests unitaires
+        run: pnpm test

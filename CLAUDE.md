@@ -40,3 +40,18 @@ le rendu, et la plupart des bugs de thème n'apparaissent que dans celui où l'o
 
 Le DS est consommé en **tarball GitHub épinglé au commit**. Après un merge ici :
 `pnpm update machinery360-ui` côté app/web + rebuild, sinon le déployé garde l'ancien commit.
+
+## Régime CI — valider sur le poste, livrer par la CI
+
+Denis travaille seul : une CI de PR ne protège personne d'un collègue, elle répète
+ce que le poste sait déjà, plus lentement. Depuis le 2026-08-07 (alignement sur
+waypoint360, cf. `POC_PLAYBOOK/15-CI-SOLO.md`) :
+
+- **Validation** — `pnpm verify`, accroché à `.githooks/pre-push`.
+  À installer une fois par clone : `git config core.hooksPath .githooks`.
+- **Filet** — `ci-light.yml` sur les PR : **tests unitaires seuls**, pour le cas où
+  le hook a été contourné. Ce n'est pas une validation.
+- **CI complète** — `ci-full.yml`, en sommeil (`workflow_dispatch`), contenu intact,
+  lançable à la main depuis l'onglet Actions.
+- **Livraison** — reste entièrement en CI. Ne jamais la déplacer sur le poste : une
+  production qui dépend de l'état d'une machine un mardi soir n'est pas une production.
