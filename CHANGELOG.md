@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.11.0...v0.12.0) (2026-08-07)
+
+
+### Features
+
+* **social-links:** les réseaux d'une marque en icônes, pas en URL brutes ([#35](https://github.com/Meridian-Synergy/machinery360-ui/issues/35)) ([871ab22](https://github.com/Meridian-Synergy/machinery360-ui/commit/871ab223eb09caf097a7e976e60eb85a52a061fc))
+
 ## [0.11.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.10.0...v0.11.0) (2026-08-07)
 
 
