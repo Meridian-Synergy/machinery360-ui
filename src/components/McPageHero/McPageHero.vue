@@ -87,9 +87,21 @@ withDefaults(defineProps<{
       <!-- ⚠️ Le surtitre vient AVANT le `h1` visuellement, mais il n'est pas un
            titre : le mettre en `h2` casserait le plan du document, et un lecteur
            d'écran annoncerait une section vide. -->
+      <!-- ⚠️ `media` passe AVANT le surtitre : c'est là que vivent les
+           logotypes de marque, qui identifient la page avant même son titre.
+           Sans cet emplacement, la page marque aurait gardé son bandeau
+           sur-mesure — et une seule page hors du composant suffit à rouvrir la
+           dérive qu'il ferme. -->
+      <div v-if="$slots.media" class="mc-page-hero__media">
+        <slot name="media" />
+      </div>
       <p v-if="eyebrow" class="mc-page-hero__eyebrow">{{ eyebrow }}</p>
       <h1 class="mc-page-hero__title">{{ title }}</h1>
       <p v-if="lead" class="mc-page-hero__lead">{{ lead }}</p>
+      <!-- Contenu libre sous le chapô : résumé de note, méta, chiffres. -->
+      <div v-if="$slots.default" class="mc-page-hero__body">
+        <slot />
+      </div>
       <div v-if="$slots.actions" class="mc-page-hero__actions">
         <slot name="actions" />
       </div>
@@ -153,6 +165,8 @@ span.mc-page-hero__crumb-link { opacity: 0.75; }
   opacity: 0.88;
   line-height: 1.6;
 }
+.mc-page-hero__media { margin-bottom: var(--mc-space-sm, 8px); }
+.mc-page-hero__body { margin-top: var(--mc-space-sm, 8px); }
 .mc-page-hero__actions {
   display: flex;
   flex-wrap: wrap;
