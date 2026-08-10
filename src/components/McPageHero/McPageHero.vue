@@ -187,6 +187,27 @@ span.mc-page-hero__crumb-link { opacity: 0.75; }
 }
 .mc-page-hero__media { margin-bottom: var(--mc-space-sm, 8px); }
 .mc-page-hero__body { margin-top: var(--mc-space-sm, 8px); }
+/**
+ * ⚠️ LE BANDEAU SAIT QU'IL EST SUR FOND SOMBRE — c'est donc à LUI d'adapter ses
+ * boutons, pas à chaque page.
+ *
+ * Un `McButton variant="secondary"` porte du texte foncé sur fond clair : posé
+ * sur le navy, il devient un cadre VIDE. Vu en production le 2026-08-10 sur
+ * l'accueil de machinery360-web, où la migration vers ce composant avait
+ * emporté la règle `.hero__actions :deep(...)` que la page portait.
+ *
+ * ⚠️ La remettre dans la page aurait recréé la duplication que ce composant
+ * supprime : la prochaine page à mettre un bouton secondaire dans son bandeau
+ * l'aurait redécouvert seule, ou pas du tout.
+ */
+.mc-page-hero__actions :deep(.mc-button--secondary) {
+  color: #fff;
+  border-color: rgb(255 255 255 / 55%);
+}
+.mc-page-hero__actions :deep(.mc-button--secondary:hover) {
+  border-color: #fff;
+  background: rgb(255 255 255 / 8%);
+}
 .mc-page-hero__actions {
   display: flex;
   flex-wrap: wrap;
