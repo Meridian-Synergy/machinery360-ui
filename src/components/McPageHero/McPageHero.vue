@@ -25,13 +25,17 @@ withDefaults(defineProps<{
   /** Le titre de la page. Rendu en `h1` : il n'y en a qu'un par page. */
   title: string
   /**
-   * Le fil d'Ariane, du plus général au plus précis — SANS la page courante :
-   * elle est déjà le `h1` juste en dessous.
+   * Le fil d'Ariane, du plus général au plus précis — **page courante
+   * COMPRISE**, en dernier maillon et sans `to`.
    *
-   * ⚠️ Un maillon sans `to` se rend en TEXTE, pas en lien mort. Le dernier
-   * maillon d'un fil est le seul que l'on ne clique jamais, et un lien qui
-   * ramène sur la page où l'on est déjà est une impasse annoncée comme un
-   * chemin.
+   * ⚠️ Ce n'est PAS une répétition du `h1`, et c'est le contresens que j'avais
+   * fait. Relevé sur `waypoint360.eu/conditions-generales-vente` : le fil dit
+   * « CGV » là où le titre dit « Conditions Générales de Vente ». Le dernier
+   * maillon porte la forme COURTE, celle qui tient dans un chemin — l'exclure
+   * laisse le lecteur sans repère de fin.
+   *
+   * ⚠️ Un maillon sans `to` se rend en TEXTE, jamais en lien mort : un lien qui
+   * ramène là où l'on est déjà est une impasse annoncée comme un chemin.
    *
    * ⚠️ C'est le fil VISIBLE. Les données structurées `BreadcrumbList` restent
    * l'affaire de `useBreadcrumb` côté site : les deux décrivent le même chemin
@@ -65,12 +69,18 @@ withDefaults(defineProps<{
       <nav v-if="breadcrumb?.length" class="mc-page-hero__crumbs" :aria-label="breadcrumbLabel">
         <ol class="mc-page-hero__crumb-list">
           <li v-for="(crumb, i) in breadcrumb" :key="i" class="mc-page-hero__crumb">
-            <component :is="crumb.to ? 'a' : 'span'" :href="crumb.to" class="mc-page-hero__crumb-link">
+            <!-- ⚠️ `aria-current="page"` sur le SEUL maillon sans lien : sans
+                 lui, un lecteur d'écran énonce le chemin sans dire où l'on se
+                 trouve dedans. -->
+            <component
+              :is="crumb.to ? 'a' : 'span'" :href="crumb.to"
+              :aria-current="crumb.to ? undefined : 'page'"
+              class="mc-page-hero__crumb-link">
               {{ crumb.label }}
             </component>
             <!-- ⚠️ Le séparateur est DÉCORATIF et masqué : sans ça, un lecteur
                  d'écran énonce « barre oblique » entre chaque maillon. -->
-            <span aria-hidden="true" class="mc-page-hero__sep">/</span>
+            <span aria-hidden="true" class="mc-page-hero__sep">›</span>
           </li>
         </ol>
       </nav>
