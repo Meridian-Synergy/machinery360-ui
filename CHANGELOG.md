@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.12.0...v0.13.0) (2026-08-10)
+
+
+### Features
+
+* **McPageHero:** emplacements media et contenu libre ([#39](https://github.com/Meridian-Synergy/machinery360-ui/issues/39)) ([91e644f](https://github.com/Meridian-Synergy/machinery360-ui/commit/91e644f6d8f998a281733c0bd9e1366281d5b5e0))
+* **McPageHero:** un bandeau de tête, au lieu de dix copies ([#37](https://github.com/Meridian-Synergy/machinery360-ui/issues/37)) ([a59d03d](https://github.com/Meridian-Synergy/machinery360-ui/commit/a59d03d609d7d28d78e0067fc48c0662759869a1))
+
 ## [0.12.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.11.0...v0.12.0) (2026-08-07)
 
 
