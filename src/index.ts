@@ -18,6 +18,7 @@ export { default as McSocialLinks } from './components/McSocialLinks/McSocialLin
 export { default as McButton } from './components/McButton/McButton.vue'
 export { default as McCard } from './components/McCard/McCard.vue'
 export { default as McContainer } from './components/McContainer/McContainer.vue'
+export { default as McPageHero } from './components/McPageHero/McPageHero.vue'
 export { default as McDocIcon } from './components/McDocIcon/McDocIcon.vue'
 export { default as McField } from './components/McField/McField.vue'
 export { default as McInput } from './components/McInput/McInput.vue'
