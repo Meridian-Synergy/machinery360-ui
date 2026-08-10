@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import McContainer from '../McContainer/McContainer.vue'
 
 /**
@@ -21,7 +22,7 @@ import McContainer from '../McContainer/McContainer.vue'
  * l'hétérogénéité qu'on corrige. Une page sobre se contente de ne passer que
  * `title` : `eyebrow`, `lead` et les actions sont facultatifs.
  */
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   /** Le titre de la page. Rendu en `h1` : il n'y en a qu'un par page. */
   title: string
   /**
@@ -59,6 +60,25 @@ withDefaults(defineProps<{
    */
   breadcrumb: () => [],
 })
+
+/**
+ * Le fil affiché, SANS le maillon qui répète le titre.
+ *
+ * ⚠️ Le dernier maillon porte normalement la forme COURTE — « CGV » quand le
+ * titre dit « Conditions Générales de Vente ». Mais sur une fiche, le nom est
+ * déjà le plus court possible : le fil rendait « Accueil › Marques › Rippa »
+ * suivi d'un `h1` disant « Rippa ». Deux fois le même mot, à trois pixels
+ * d'écart.
+ *
+ * ⚠️ On ne coupe QUE s'il est identique au titre. Le retirer systématiquement
+ * priverait les pages légales de leur repère de fin, qui est précisément ce
+ * qu'apporte la référence wp360.
+ */
+const crumbs = computed(() => {
+  const list = props.breadcrumb
+  const last = list[list.length - 1]
+  return last && !last.to && last.label.trim() === props.title.trim() ? list.slice(0, -1) : list
+})
 </script>
 
 <template>
@@ -66,9 +86,9 @@ withDefaults(defineProps<{
     <McContainer :width="width">
       <!-- ⚠️ Un `nav` NOMMÉ : une page peut porter plusieurs `nav`, et sans
            étiquette un lecteur d'écran les annonce toutes « navigation ». -->
-      <nav v-if="breadcrumb?.length" class="mc-page-hero__crumbs" :aria-label="breadcrumbLabel">
+      <nav v-if="crumbs.length" class="mc-page-hero__crumbs" :aria-label="breadcrumbLabel">
         <ol class="mc-page-hero__crumb-list">
-          <li v-for="(crumb, i) in breadcrumb" :key="i" class="mc-page-hero__crumb">
+          <li v-for="(crumb, i) in crumbs" :key="i" class="mc-page-hero__crumb">
             <!-- ⚠️ `aria-current="page"` sur le SEUL maillon sans lien : sans
                  lui, un lecteur d'écran énonce le chemin sans dire où l'on se
                  trouve dedans. -->
