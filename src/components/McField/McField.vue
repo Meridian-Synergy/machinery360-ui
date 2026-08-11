@@ -66,7 +66,14 @@ const describedBy = computed(() => {
 
     <p v-if="hint" :id="hintId" class="mc-field__hint">{{ hint }}</p>
 
-    <slot :control-id="controlId" :described-by="describedBy" :invalid="!!error" />
+    <!--
+      The control sits in its own box so it can be pushed to the BOTTOM of the
+      field — see `.mc-field__control`. Without the wrapper there is no element
+      to hang that rule on: a slot is not a box.
+    -->
+    <div class="mc-field__control">
+      <slot :control-id="controlId" :described-by="describedBy" :invalid="!!error" />
+    </div>
 
     <!-- Errors are announced when they appear, without stealing focus. -->
     <p v-if="error" :id="errorId" class="mc-field__error" role="alert">{{ error }}</p>
@@ -78,6 +85,29 @@ const describedBy = computed(() => {
   display: flex;
   flex-direction: column;
   gap: var(--mc-space-xs, 4px);
+  /* Fields laid out side by side are stretched by their grid; this makes that
+     height usable by the rule below. Alone, a field still measures its own
+     content. */
+  height: 100%;
+}
+
+/**
+ * ⚠️ THE CONTROL IS PUSHED TO THE BOTTOM, and that is what keeps neighbouring
+ * fields aligned.
+ *
+ * Two fields side by side rarely carry hints of the same height — « C'est votre
+ * identifiant de connexion — il ne se modifie pas ici » wraps onto two lines
+ * where « Sert aussi aux e-mails » takes one. The labels then line up while the
+ * inputs sit one line apart, which reads as a mistake because it is one.
+ *
+ * ⚠️ Aligning the whole field to the bottom (`align-items: end` on the grid)
+ * would fix the inputs and break the labels. Only the control moves.
+ *
+ * ⚠️ No effect on a field standing alone: with nothing stretching it, `auto`
+ * has no free space to distribute.
+ */
+.mc-field__control {
+  margin-top: auto;
 }
 .mc-field__label {
   font-size: var(--mc-text-sm, 0.875rem);

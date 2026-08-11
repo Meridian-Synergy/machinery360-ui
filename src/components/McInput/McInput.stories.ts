@@ -70,3 +70,29 @@ export const PasswordReveal: Story = {
       </form>`,
   }),
 }
+
+/**
+ * DEUX CHAMPS CÔTE À CÔTE, AUX INDICATIONS INÉGALES.
+ *
+ * ⚠️ Le cas qui a produit le défaut, signalé sur l'écran de compte : une
+ * indication de deux lignes à gauche, d'une seule à droite. Les étiquettes
+ * s'alignaient, les champs non — décalés d'exactement une ligne.
+ *
+ * ⚠️ La correction pousse le CONTRÔLE en bas de son champ, jamais le champ
+ * entier : aligner le tout par le bas remettrait les saisies en face, mais
+ * décalerait les étiquettes.
+ */
+export const CoteACote: Story = {
+  name: 'Deux champs côte à côte',
+  render: () => ({
+    components: { McInput },
+    setup: () => ({ email: ref(''), lang: ref('Français') }),
+    template: `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:620px">
+        <McInput v-model="email" label="Adresse e-mail"
+                 hint="C'est votre identifiant de connexion — il ne se modifie pas ici." />
+        <McInput v-model="lang" label="Langue"
+                 hint="Sert aussi aux e-mails, qui partent hors session." />
+      </div>`,
+  }),
+}
