@@ -33,3 +33,5 @@ export { default as McLoadingState } from './components/McLoadingState/McLoading
 export { default as McThemeToggle } from './components/McThemeToggle/McThemeToggle.vue'
 export { default as McTextSizeToggle } from './components/McTextSizeToggle/McTextSizeToggle.vue'
 export { default as McSpinner } from './components/McSpinner/McSpinner.vue'
+export { default as McSpecGrid } from './components/McSpecGrid/McSpecGrid.vue'
+export type { McSpecItem } from './components/McSpecGrid/McSpecGrid.vue'
