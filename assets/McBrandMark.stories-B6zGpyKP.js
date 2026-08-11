@@ -1,4 +1,4 @@
-import{M as r}from"./McBrandMark-Bo3XcOhL.js";import"./iframe-B5LkNHTM.js";import"./preload-helper-PPVm8Dsz.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";const m={title:"Composants/McBrandMark",component:r},e={render:()=>({components:{McBrandMark:r},template:`
+import{M as r}from"./McBrandMark-B8Rlefrv.js";import"./iframe-B2prD8b5.js";import"./preload-helper-PPVm8Dsz.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";const m={title:"Composants/McBrandMark",component:r},e={render:()=>({components:{McBrandMark:r},template:`
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
         <McBrandMark name="Rippa" />
         <McBrandMark name="JCB" />
