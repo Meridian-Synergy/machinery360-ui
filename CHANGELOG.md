@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.1](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.14.0...v0.14.1) (2026-08-11)
+
+
+### Bug Fixes
+
+* **McField:** deux champs côte à côte alignent enfin leurs contrôles ([#44](https://github.com/Meridian-Synergy/machinery360-ui/issues/44)) ([10abdb0](https://github.com/Meridian-Synergy/machinery360-ui/commit/10abdb0b2bde75ff581e6012a28b44cbde94c502))
+
 ## [0.14.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.13.0...v0.14.0) (2026-08-11)
 
 
