@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.14.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.13.0...v0.14.0) (2026-08-11)
+
+
+### Features
+
+* **McAvatar:** l'initiale d'une personne dans un disque de couleur ([#43](https://github.com/Meridian-Synergy/machinery360-ui/issues/43)) ([8ca2be8](https://github.com/Meridian-Synergy/machinery360-ui/commit/8ca2be817c2d716fe996c237e83cea15265bfdb3))
+
+
+### Bug Fixes
+
+* **McPageHero:** le bouton secondaire redevient lisible sur le navy ([#42](https://github.com/Meridian-Synergy/machinery360-ui/issues/42)) ([8e3bec5](https://github.com/Meridian-Synergy/machinery360-ui/commit/8e3bec5e70f6e9f1359f3458f880101836c4c6d4))
+* **McPageHero:** le fil ne répète plus le titre ([#40](https://github.com/Meridian-Synergy/machinery360-ui/issues/40)) ([c293b79](https://github.com/Meridian-Synergy/machinery360-ui/commit/c293b7946402bb128cf562bdd2275e845bd9ff0f))
+
 ## [0.13.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.12.0...v0.13.0) (2026-08-10)
 
 
