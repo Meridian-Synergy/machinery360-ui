@@ -11,6 +11,7 @@
  *   @import "machinery360-ui/src/tokens/base.css";
  */
 export { default as McAlert } from './components/McAlert/McAlert.vue'
+export { default as McAvatar } from './components/McAvatar/McAvatar.vue'
 export { default as McBucketBadge } from './components/McBucketBadge/McBucketBadge.vue'
 export { default as McBrandMark } from './components/McBrandMark/McBrandMark.vue'
 export { default as McBrandLogo } from './components/McBrandLogo/McBrandLogo.vue'
