@@ -39,7 +39,20 @@ le rendu, et la plupart des bugs de thème n'apparaissent que dans celui où l'o
 ## Propagation vers les consommateurs
 
 Le DS est consommé en **tarball GitHub épinglé au commit**. Après un merge ici :
-`pnpm update machinery360-ui` côté app/web + rebuild, sinon le déployé garde l'ancien commit.
+repropager côté app/web + rebuild, sinon le déployé garde l'ancien commit.
+
+⚠️ **JAMAIS `pnpm update machinery360-ui`.** Sur une dépendance `github:`, il réécrit la
+résolution de `https://codeload.github.com/…/tar.gz/<sha>` en
+`git+https://git@github.com:…#<sha>`. Les deux installent sur le poste ; **l'image Docker
+de build n'a pas `git`** et meurt sur `pnpm: not found: git`. Tests, lint, typecheck et
+`pnpm build` restent verts : le seul environnement qui échoue est celui qu'on ne fait pas
+tourner en local, et ça casse **après** le merge de la Release PR. (Vécu le 2026-08-12 sur
+app **et** web en même temps.)
+
+**Repropager** : réécrire le sha à la main dans `pnpm-lock.yaml` (forme `codeload`), puis
+`pnpm install --frozen-lockfile`. `test/lockfile-resolution.spec.ts` refuse désormais toute
+résolution `git+`.
+
 
 ## Régime CI — valider sur le poste, livrer par la CI
 
