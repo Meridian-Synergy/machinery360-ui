@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.14.1...v0.15.0) (2026-08-11)
+
+
+### Features
+
+* **specs:** McSpecGrid, et le « non connu » comme valeur de plein droit ([#46](https://github.com/Meridian-Synergy/machinery360-ui/issues/46)) ([612cc91](https://github.com/Meridian-Synergy/machinery360-ui/commit/612cc911ccd10265cd37edba47925b9eed688167))
+
 ## [0.14.1](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.14.0...v0.14.1) (2026-08-11)
 
 
