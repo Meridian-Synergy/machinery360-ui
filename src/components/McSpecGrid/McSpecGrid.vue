@@ -35,6 +35,21 @@ export interface McSpecItem {
   label: string
   /** Valeur déjà formatée, unité comprise. `null` = non connu. */
   value: string | null
+  /**
+   * OÙ RENSEIGNER **CETTE** CARACTÉRISTIQUE — rendu seulement si `value` est
+   * `null`.
+   *
+   * ⚠️ L'URL est CONSTRUITE PAR LE CONSOMMATEUR, jamais dérivée ici. Le DS ne
+   * connaît ni le plan de route de l'app, ni le nom des paramètres : lui faire
+   * concaténer `?spec=` + `key` l'aurait rendu solidaire d'une application
+   * précise, et cassable par un déménagement de route qu'il ne verrait pas
+   * passer.
+   *
+   * ⚠️ Distinct de `contributeHref`, qui vise la grille ENTIÈRE. Les deux
+   * cohabitent : le lien global reste la porte pour qui veut aider sans savoir
+   * quoi, celui-ci sert qui a l'information sous les yeux.
+   */
+  contributeHref?: string
 }
 
 const props = withDefaults(defineProps<{
@@ -51,6 +66,19 @@ const props = withDefaults(defineProps<{
   /** Invitation à contribuer, affichée seulement s'il manque quelque chose. */
   contributeLabel?: string
   contributeHref?: string
+  /**
+   * Le libellé du lien PAR TUILE — court, il se répète autant de fois qu'il
+   * manque de valeurs.
+   *
+   * ⚠️ Il ne remplace pas `contributeLabel` : « Compléter les caractéristiques »
+   * a un sens sous la grille et aucun dans une tuile de 120 px. Deux portées,
+   * deux libellés.
+   *
+   * ⚠️ Le nom accessible du lien reprend le LIBELLÉ DE LA TUILE
+   * (« Renseigner : Poids en ordre de marche »). Douze liens qui s'annoncent
+   * tous « Renseigner » sont, pour un lecteur d'écran, douze fois le même lien.
+   */
+  contributeItemLabel?: string
 }>(), {
   label: '',
   iteration: null,
@@ -58,6 +86,7 @@ const props = withDefaults(defineProps<{
   sourceLabel: '',
   contributeLabel: '',
   contributeHref: '',
+  contributeItemLabel: '',
 })
 
 /**
@@ -142,6 +171,23 @@ const missingCount = computed(() => props.items.filter(i => i.value === null).le
           class="mc-spec-grid__val"
           :class="{ 'mc-spec-grid__val--unknown': item.value === null }"
         >{{ item.value ?? unknownLabel }}</span>
+
+        <!--
+          ⚠️ UN LIEN À CÔTÉ DU « NON CONNU », jamais À LA PLACE. Faire du « non
+          connu » lui-même un lien donnerait douze liens nommés « non connu » —
+          illisible au lecteur d'écran, et trompeur : le texte annoncerait un
+          état, le lien promettrait une action.
+
+          ⚠️ Le trou est le seul endroit où l'invitation a un sens. Sur une
+          valeur connue, elle proposerait de corriger ce que personne n'a
+          signalé comme faux — c'est le rôle du signalement, pas de la grille.
+        -->
+        <a
+          v-if="item.value === null && item.contributeHref && contributeItemLabel"
+          class="mc-spec-grid__fill"
+          :href="item.contributeHref"
+          :aria-label="`${contributeItemLabel} : ${item.label}`"
+        >{{ contributeItemLabel }}</a>
       </li>
     </ul>
 
@@ -302,4 +348,23 @@ const missingCount = computed(() => props.items.filter(i => i.value === null).le
  * bascule dans le composant créerait un second endroit à corriger le jour où la
  * charte bougera — et c'est toujours celui-là qu'on oublie.
  */
+
+/**
+ * ⚠️ Discret par construction : la grille dit d'abord ce qu'on sait. Un lien
+ * d'appel à contribution sur douze tuiles, en pleine couleur, transformerait
+ * une fiche technique en formulaire.
+ */
+.mc-spec-grid__fill {
+  margin-top: 2px;
+  font-size: var(--mc-text-xs, 0.75rem);
+  font-weight: 600;
+  color: var(--mc-color-blue, #1560a8);
+  text-decoration: none;
+}
+.mc-spec-grid__fill:hover { text-decoration: underline; }
+.mc-spec-grid__fill:focus-visible {
+  outline: var(--mc-focus-ring, 2px solid #1560a8);
+  outline-offset: 2px;
+  border-radius: var(--mc-radius-sm, 6px);
+}
 </style>
