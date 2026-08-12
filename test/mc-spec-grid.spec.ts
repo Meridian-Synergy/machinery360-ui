@@ -95,3 +95,63 @@ describe('McSpecGrid — les garde-fous', () => {
     expect(w.html()).not.toContain('<span v-html')
   })
 })
+
+/**
+ * LE LIEN PAR TUILE — renseigner LA caractéristique qui manque.
+ *
+ * ⚠️ Jusqu'ici la grille n'avait qu'une porte, sous le tableau : « compléter les
+ * caractéristiques ». Elle menait à une file de tâches, où il fallait retrouver
+ * le modèle qu'on avait sous les yeux. Le lecteur qui connaît le poids de son
+ * R10 le connaît AU MOMENT où il lit « non connu » en face de « Poids ».
+ */
+describe('McSpecGrid — contribuer sur la tuile', () => {
+  const ITEMS = [
+    { key: 'weight_kg', label: 'Poids en ordre de marche', value: null, contributeHref: '/go?spec=weight_kg' },
+    { key: 'power_kw', label: 'Puissance', value: '10,2 kW', contributeHref: '/go?spec=power_kw' },
+  ]
+
+  it('n’offre le lien que sur les tuiles SANS valeur', () => {
+    /**
+     * ⚠️ Sur une valeur connue, l'invitation proposerait de corriger ce que
+     * personne n'a signalé comme faux — c'est le rôle du signalement, pas de la
+     * grille.
+     */
+    const w = mount(McSpecGrid, {
+      props: { items: ITEMS, unknownLabel: 'non connu', contributeItemLabel: 'Renseigner' },
+    })
+    const links = w.findAll('.mc-spec-grid__fill')
+    expect(links).toHaveLength(1)
+    expect(links[0]!.attributes('href')).toBe('/go?spec=weight_kg')
+  })
+
+  it('nomme le lien par la caractéristique, pas par « Renseigner »', () => {
+    /**
+     * ⚠️ Douze liens qui s'annoncent tous « Renseigner » sont, pour un lecteur
+     * d'écran, douze fois le même lien. Le nom accessible reprend le libellé de
+     * la tuile.
+     */
+    const w = mount(McSpecGrid, {
+      props: { items: ITEMS, unknownLabel: 'non connu', contributeItemLabel: 'Renseigner' },
+    })
+    expect(w.find('.mc-spec-grid__fill').attributes('aria-label'))
+      .toBe('Renseigner : Poids en ordre de marche')
+  })
+
+  it('ne rend rien sans libellé — le DS n’invente pas de texte', () => {
+    // Un libellé en dur ici serait anglais chez un lecteur polonais.
+    const w = mount(McSpecGrid, { props: { items: ITEMS, unknownLabel: 'non connu' } })
+    expect(w.findAll('.mc-spec-grid__fill')).toHaveLength(0)
+  })
+
+  it('laisse le « non connu » en TEXTE, jamais en lien', () => {
+    /**
+     * ⚠️ Faire du « non connu » lui-même un lien donnerait douze liens nommés
+     * « non connu » : le texte annoncerait un état, le lien promettrait une
+     * action.
+     */
+    const w = mount(McSpecGrid, {
+      props: { items: ITEMS, unknownLabel: 'non connu', contributeItemLabel: 'Renseigner' },
+    })
+    expect(w.find('.mc-spec-grid__val--unknown').element.tagName).toBe('SPAN')
+  })
+})
