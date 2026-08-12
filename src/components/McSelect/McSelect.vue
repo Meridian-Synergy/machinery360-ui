@@ -56,12 +56,33 @@ defineEmits<{ 'update:modelValue': [value: string] }>()
           v-bind="$attrs"
           @change="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
         >
-          <option v-if="placeholder" value="" disabled>{{ placeholder }}</option>
+          <!--
+            ⚠️ `:selected` EN PLUS de `:value` sur le `<select>`, et ce n'est pas
+            une redondance : c'est ce qui fait tenir le rendu SERVEUR.
+
+            Vue ne traduit un `:value` de `<select>` en attribut `selected` que
+            pour `v-model`. Avec une liaison simple, le HTML livré par le serveur
+            ne sélectionne RIEN — le navigateur affiche donc la première option,
+            c'est-à-dire le libellé neutre, alors que la valeur est posée.
+            L'hydratation corrige ensuite, en silence.
+
+            ⚠️ Mesuré le 2026-08-12 sur `/distributeurs` : la liste arrivait
+            filtrée sur la France et le menu annonçait « Tous les pays ». Le
+            contrôle contredisait la page qu'il commande — devant un robot, un
+            lecteur sans JavaScript, ou simplement avant l'hydratation.
+
+            ⚠️ Comparaison en `String` : une option peut porter un `number`
+            (`{ value: 2024 }`) là où le modèle porte la chaîne rendue par le
+            `<select>`. `2024 === '2024'` est faux, et la sélection se perdrait
+            sur les seules listes numériques.
+          -->
+          <option v-if="placeholder" value="" disabled :selected="!modelValue">{{ placeholder }}</option>
           <option
             v-for="option in options"
             :key="option.value"
             :value="option.value"
             :disabled="option.disabled"
+            :selected="String(option.value) === String(modelValue ?? '')"
           >
             {{ option.label }}
           </option>
