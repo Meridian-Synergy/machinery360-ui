@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.15.1...v0.16.0) (2026-08-12)
+
+
+### Features
+
+* **spec-grid:** renseigner LA caractéristique qui manque, depuis sa tuile ([#51](https://github.com/Meridian-Synergy/machinery360-ui/issues/51)) ([937a4c2](https://github.com/Meridian-Synergy/machinery360-ui/commit/937a4c2654bc08e0539a6350687d261a11822ad4))
+
 ## [0.15.1](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.15.0...v0.15.1) (2026-08-12)
 
 
