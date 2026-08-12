@@ -30,6 +30,7 @@
     "@storybook/vue3": "^10.2.15",
     "@storybook/vue3-vite": "^10.2.15",
     "@vitejs/plugin-vue": "^6.0.4",
+    "@vue/server-renderer": "^3.5.40",
     "@vue/test-utils": "^2.4.6",
     "eslint": "^10.7.0",
     "flag-icons": "^7.5.0",
