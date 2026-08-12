@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.1](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.15.0...v0.15.1) (2026-08-12)
+
+
+### Bug Fixes
+
+* **select:** le rendu serveur sélectionne vraiment l'option courante ([#48](https://github.com/Meridian-Synergy/machinery360-ui/issues/48)) ([98eba41](https://github.com/Meridian-Synergy/machinery360-ui/commit/98eba411be06d42bdc04686ed092b87f44fb92ee))
+
 ## [0.15.0](https://github.com/Meridian-Synergy/machinery360-ui/compare/v0.14.1...v0.15.0) (2026-08-11)
 
 
